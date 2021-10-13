@@ -52,8 +52,9 @@ export default function* sagas() {
 
 export function* initialize() {
   const {entityName, formName} = yield select(entityListSelector)
+  const {scope} = yield select(listSelector)
   yield all([
-    call(loadFormDefinition, formName),
+    call(loadFormDefinition, formName, scope),
     call(loadEntityModel, entityName)
   ])
 
@@ -336,8 +337,8 @@ export function* setSorting() {
   }
 }
 
-export function* loadFormDefinition(formName) {
-  const fetchedFormDefinition = yield call(rest.fetchForm, formName, 'list')
+export function* loadFormDefinition(formName, scope) {
+  const fetchedFormDefinition = yield call(rest.fetchForm, formName, scope)
   yield put(actions.setFormDefinition(fetchedFormDefinition))
   yield call(extractFormInformation, fetchedFormDefinition)
 }

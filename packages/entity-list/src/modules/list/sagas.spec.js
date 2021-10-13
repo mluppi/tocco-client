@@ -64,13 +64,15 @@ describe('entity-list', () => {
           test('should load form and model', () => {
             const formName = 'UserSearch'
             const entityName = 'User'
+            const scope = 'list'
             return expectSaga(sagas.initialize)
               .provide([
                 [select(sagas.entityListSelector), {entityName, formName}],
+                [select(sagas.listSelector), {scope}],
                 [matchers.call.fn(sagas.loadFormDefinition)],
                 [matchers.call.fn(sagas.loadEntityModel)]
               ])
-              .call(sagas.loadFormDefinition, formName)
+              .call(sagas.loadFormDefinition, formName, scope)
               .call(sagas.loadEntityModel, entityName)
               .put(actions.setInitialized())
               .run()
